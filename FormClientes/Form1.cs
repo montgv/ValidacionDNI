@@ -526,10 +526,7 @@ namespace FormClientes
         {
 
         }
-
-    
-
-           
+  
 
         private void button13_Click_1(object sender, EventArgs e)
         {
@@ -556,22 +553,42 @@ namespace FormClientes
                 }
             }
 
-        private void maskedTextBox1_TypeValidationCompleted(object sender, TypeValidationEventArgs e)
+        private void ValidarDni()
         {
-            ToolTip toolTip1 = new ToolTip();
-            toolTip1.IsBalloon = true;
+            string dni = maskedTextBox1.Text;
 
-            if (!e.IsValidInput)
+            if (dni.Length != 9)
             {
-                toolTip1.ToolTipTitle = "DNI no válido";
-                toolTip1.Show("El DNI no tiene el formato correcto, son 00000000L.", maskedTextBox1, 0, -20, 5000);
+                MessageBox.Show("El DNI no tiene el formato correcto.");
+            }
+
+            string dniDigitos = dni.Substring(0, dni.Length - 1);
+            string dniLetra = dni.Substring(dni.Length - 1, 1);
+
+            //Convertimos el string de los numeros a un entero
+            int digitosDni = Convert.ToInt32(dniDigitos);
+
+            if (CalcularDniLetra(digitosDni) != dniLetra)
+            {
+                MessageBox.Show("La letra del DNI no es correcta.");
             } else
             {
-                MaskedTextBox usuarioMask = (MaskedTextBox)e.ReturnValue;
+                MessageBox.Show("El DNI es correcto.");
+            }
+        }
 
-                usuarioMask.TextMaskFormat;
+        static String CalcularDniLetra(int dniNumeros)
+        {
+            string[] control = { "T", "R", "W", "A", "G", "M", "Y", "F", "P", "D", "X", "B", "N", "J", "Z", "S", "Q", "V", "H", "L", "C", "K", "E" };
+            int mod = dniNumeros % 23;
+            return control[mod];
+        }
 
-                if
+        private void maskedTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (maskedTextBox1.Text.Length == 9)
+            {
+                ValidarDni();
             }
         }
     }
